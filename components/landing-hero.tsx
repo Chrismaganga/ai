@@ -3,11 +3,21 @@
 import TypewriterComponent from "typewriter-effect";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 
 export const LandingHero = () => {
   const { isSignedIn } = useAuth();
+  const router = useRouter();
+
+  const handleClick = () => {
+    if (isSignedIn) {
+      router.push('/dashboard');
+    } else {
+      router.push('/sign-up');
+    }
+  };
 
   return (
     <div className="text-white font-bold py-36 text-center space-y-5">
@@ -32,11 +42,13 @@ export const LandingHero = () => {
         Advanced AI 10x faster.
       </div>
       <div>
-        <Link href={isSignedIn ? "/dashboard" : "/sign-up"}>
-          <Button variant="premium" className="md:text-lg p-4 md:p-6 rounded-md font-semibold">
-            Start Generating For Free
-          </Button>
-        </Link>
+        <Button
+          variant="premium"
+          className="md:text-lg p-4 md:p-6 rounded-md font-semibold"
+          onClick={handleClick}
+        >
+          {isSignedIn ? "Go to Dashboard" : "Start Generating For Free"}
+        </Button>
       </div>
       <div className="text-zinc-400 text-xs md:text-sm font-normal">
         No credit card required.
